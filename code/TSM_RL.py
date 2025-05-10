@@ -1,6 +1,4 @@
-# =========================================================
-# 0. LIBRARIES
-# =========================================================
+
 import os, numpy as np, pandas as pd, matplotlib.pyplot as plt
 from statsmodels.tsa.arima.model import ARIMA
 import gymnasium as gym
@@ -10,7 +8,7 @@ from stable_baselines3.common.vec_env import DummyVecEnv
 from sklearn.metrics import mean_squared_error, mean_absolute_error
 
 # ---------------------------------------------------------
-#  DATA  ►  simulate → save CSV → reload
+#  DATA  
 # ---------------------------------------------------------
 DATA_PATH  = "RL_sales_data.csv"
 
@@ -18,7 +16,7 @@ DATA_PATH  = "RL_sales_data.csv"
 data = pd.read_csv(DATA_PATH, parse_dates=["date"]).set_index("date")
 
 # ---------------------------------------------------------
-#  FROZEN BASELINE   (train on first 300 days)
+#  FROZEN BASELINE   (train on first K days)
 # ---------------------------------------------------------
 TRAIN_END = 300
 train_y = data["sales"][:TRAIN_END]
