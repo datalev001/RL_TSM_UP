@@ -1,1 +1,8 @@
-# RL_TSM_UP
+# Plug-and-Play Reinforcement Learning for Real-Time Forecast Recalibration
+Updating legacy ARMA sales models with a PPO residual corrector - no full retrain required
+When I build a time-series model - say an ARMA trained on last season's prices, promos, and holiday flags - to forecast daily sales, everything looks sharp on the validation plots.
+A few months later the marketing team flips its playbook, competitors slash tags, and the once-neat residuals drift off-center. Many supply-chain teams shrug, dump in the new data, and grind through a full retrain: pick fresh lags, rerun grid-search, redeploy the pipeline.
+That rebuild cycle is slow, breaks governance checkpoints, and constantly resets alert thresholds. Worse, every restart discards the hard-won structure already baked into the original ARMA.
+So this paper asks a simpler question: Why not keep the trusted core and bolt on a reinforcement-learning auto-tuner? The RL agent observes yesterday's forecast error together with live context (today's price, promo flag, competitor price, marketing spend), then nudges the baseline up or down by a modest percentage - think of a thermostat giving the heater tiny extra bursts when a cold front hits.
+We train that agent with Proximal Policy Optimization (PPO). PPO treats each correction as a continuous action, rewards relative error reduction, and clips policy steps so the tweak never jumps wildly. By learning online it adapts within hours, not weeks, and never touches the frozen ARMA coefficients.
+This post spells out the recipe: how to build the state vector, craft a reward that measures genuine improvement, wire PPO into a forecast loop, and validate that the RL layer keeps accuracy high without the pain of rebuilding the entire model.
